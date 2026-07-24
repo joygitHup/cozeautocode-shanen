@@ -1,8 +1,47 @@
 'use client';
 
-import { MapPin, Phone, Mail } from 'lucide-react';
+import { useState, type FormEvent } from 'react';
+import { MapPin, Phone, Mail, CheckCircle, AlertCircle } from 'lucide-react';
 
 export default function ContactSection() {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    company: '',
+    domain: '',
+    message: '',
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitResult, setSubmitResult] = useState<'success' | 'error' | null>(null);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.phone) return;
+
+    setSubmitting(true);
+    setSubmitResult(null);
+
+    try {
+      const res = await fetch('/api/consultation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const result = await res.json();
+
+      if (result.success) {
+        setSubmitResult('success');
+        setFormData({ name: '', phone: '', company: '', domain: '', message: '' });
+      } else {
+        setSubmitResult('error');
+      }
+    } catch {
+      setSubmitResult('error');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <section id="contact" className="relative py-24 lg:py-32">
       {/* Background */}
@@ -93,24 +132,51 @@ export default function ContactSection() {
             <h3 className="text-lg font-bold text-slate-100 mb-6 tracking-wide">
               在线咨询
             </h3>
-            <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+
+            {submitResult === 'success' && (
+              <div className="mb-6 flex items-center gap-3 p-4 border border-emerald-500/30 bg-emerald-500/5 rounded-sm">
+                <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0" strokeWidth={1.5} />
+                <div>
+                  <p className="text-sm text-emerald-400 font-medium">提交成功</p>
+                  <p className="text-xs text-slate-400 mt-0.5">我们将在 1 个工作日内与您联系</p>
+                </div>
+              </div>
+            )}
+
+            {submitResult === 'error' && (
+              <div className="mb-6 flex items-center gap-3 p-4 border border-red-500/30 bg-red-500/5 rounded-sm">
+                <AlertCircle className="w-5 h-5 text-red-400 shrink-0" strokeWidth={1.5} />
+                <div>
+                  <p className="text-sm text-red-400 font-medium">提交失败</p>
+                  <p className="text-xs text-slate-400 mt-0.5">请稍后重试或拨打电话联系我们</p>
+                </div>
+              </div>
+            )}
+
+            <form className="space-y-5" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs text-slate-500 mb-2 tracking-wider">
-                    姓名
+                    姓名 <span className="text-cyan-400">*</span>
                   </label>
                   <input
                     type="text"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-sm text-slate-200 placeholder:text-slate-600 focus:border-cyan-500/40 focus:outline-none transition-colors"
                     placeholder="请输入您的姓名"
                   />
                 </div>
                 <div>
                   <label className="block text-xs text-slate-500 mb-2 tracking-wider">
-                    电话
+                    电话 <span className="text-cyan-400">*</span>
                   </label>
                   <input
                     type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-sm text-slate-200 placeholder:text-slate-600 focus:border-cyan-500/40 focus:outline-none transition-colors"
                     placeholder="请输入联系电话"
                   />
@@ -122,6 +188,8 @@ export default function ContactSection() {
                 </label>
                 <input
                   type="text"
+                  value={formData.company}
+                  onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                   className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-sm text-slate-200 placeholder:text-slate-600 focus:border-cyan-500/40 focus:outline-none transition-colors"
                   placeholder="请输入公司名称"
                 />
@@ -130,7 +198,11 @@ export default function ContactSection() {
                 <label className="block text-xs text-slate-500 mb-2 tracking-wider">
                   需求领域
                 </label>
-                <select className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-sm text-slate-400 focus:border-cyan-500/40 focus:outline-none transition-colors">
+                <select
+                  value={formData.domain}
+                  onChange={(e) => setFormData({ ...formData, domain: e.target.value })}
+                  className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-sm text-slate-400 focus:border-cyan-500/40 focus:outline-none transition-colors"
+                >
                   <option value="">请选择需求领域</option>
                   <option value="reservoir">水库监测</option>
                   <option value="forest">森林监测</option>
@@ -145,15 +217,18 @@ export default function ContactSection() {
                 </label>
                 <textarea
                   rows={4}
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-sm text-slate-200 placeholder:text-slate-600 focus:border-cyan-500/40 focus:outline-none transition-colors resize-none"
                   placeholder="请简要描述您的需求"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full py-3 bg-cyan-500/10 border border-cyan-500/40 text-cyan-400 text-sm font-medium tracking-wide rounded-sm hover:bg-cyan-500/20 hover:border-cyan-500/60 transition-all duration-200"
+                disabled={submitting}
+                className="w-full py-3 bg-cyan-500/10 border border-cyan-500/40 text-cyan-400 text-sm font-medium tracking-wide rounded-sm hover:bg-cyan-500/20 hover:border-cyan-500/60 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                提交咨询
+                {submitting ? '提交中...' : '提交咨询'}
               </button>
             </form>
           </div>
