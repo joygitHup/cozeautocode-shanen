@@ -1,58 +1,29 @@
 import type { Metadata } from 'next';
-import { Inspector } from 'react-dev-inspector';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: {
-    default: '新应用 | 扣子编程',
-    template: '%s | 扣子编程',
-  },
+  title: '杉恩科技 | 物联网智慧监测系统',
   description:
-    '扣子编程是一款一站式云端 Vibe Coding 开发平台。通过对话轻松构建智能体、工作流和网站，实现从创意到上线的无缝衔接。',
+    '杉恩科技专注于物联网系统研发，提供水库、森林、国土、环境等领域的全方位智慧监测解决方案。',
   keywords: [
-    '扣子编程',
-    'Coze Code',
-    'Vibe Coding',
-    'AI 编程',
-    '智能体搭建',
-    '工作流搭建',
-    '网站搭建',
-    '网站部署',
-    '全栈开发',
-    'AI 工程师',
+    '杉恩科技',
+    '物联网',
+    'IoT',
+    '水库监测',
+    '森林监测',
+    '国土监测',
+    '环境监测',
+    '智慧监测',
+    '传感器',
+    '数据采集',
   ],
-  authors: [{ name: 'Coze Code Team', url: 'https://code.coze.cn' }],
-  generator: 'Coze Code',
-  // icons: {
-  //   icon: '',
-  // },
+  authors: [{ name: '杉恩科技' }],
   openGraph: {
-    title: '扣子编程 | 你的 AI 工程师已就位',
+    title: '杉恩科技 | 物联网智慧监测系统',
     description:
-      '我正在使用扣子编程 Vibe Coding，让创意瞬间上线。告别拖拽，拥抱心流。',
-    url: 'https://code.coze.cn',
-    siteName: '扣子编程',
-    locale: 'zh_CN',
+      '专注于物联网系统研发，提供水库、森林、国土、环境等领域的全方位智慧监测解决方案。',
     type: 'website',
-    // images: [
-    //   {
-    //     url: '',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: '扣子编程 - 你的 AI 工程师',
-    //   },
-    // ],
-  },
-  // twitter: {
-  //   card: 'summary_large_image',
-  //   title: 'Coze Code | Your AI Engineer is Here',
-  //   description:
-  //     'Build and deploy full-stack applications through AI conversation. No env setup, just flow.',
-  //   // images: [''],
-  // },
-  robots: {
-    index: true,
-    follow: true,
+    locale: 'zh_CN',
   },
 };
 
@@ -61,14 +32,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isDev = process.env.COZE_PROJECT_ENV === 'DEV';
-
   return (
-    <html lang="en">
-      <body className={`antialiased`}>
-        {isDev && <Inspector />}
-        {children}
-      </body>
+    <html lang="zh-CN" className="dark">
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
