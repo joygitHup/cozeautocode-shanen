@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Cpu, Wifi, Shield, BarChart3 } from 'lucide-react';
 
 const stats = [
-  { value: 15, suffix: '+', label: '年技术积累', prefix: '' },
-  { value: 200, suffix: '+', label: '技术专利', prefix: '' },
+  { value: 50, suffix: '+', label: '研发团队', prefix: '' },
+  { value: 100, suffix: '+', label: '项目案例', prefix: '' },
   { value: 50, suffix: '+', label: '城市覆盖', prefix: '' },
   { value: 10000, suffix: '+', label: '在线设备', prefix: '' },
 ];

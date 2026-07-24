@@ -3,11 +3,11 @@
 import { Target, Eye, Award } from 'lucide-react';
 
 const milestones = [
-  { year: '2009', event: '公司成立，聚焦物联网技术研发' },
-  { year: '2013', event: '首个水库安全监测系统上线运行' },
-  { year: '2016', event: '业务拓展至森林、国土监测领域' },
-  { year: '2019', event: '获评国家高新技术企业' },
-  { year: '2022', event: '环境监测平台覆盖全国 50+ 城市' },
+  { year: '2019', event: '公司成立，聚焦物联网技术研发' },
+  { year: '2020', event: '首个水库安全监测系统上线运行' },
+  { year: '2021', event: '业务拓展至森林、国土监测领域' },
+  { year: '2022', event: '获评国家高新技术企业' },
+  { year: '2023', event: '环境监测平台覆盖全国 50+ 城市' },
   { year: '2024', event: '新一代 AIoT 平台发布，万级设备接入' },
 ];
 
@@ -37,13 +37,13 @@ export default function AboutSection() {
           {/* Left - Description */}
           <div>
             <p className="text-slate-300 leading-relaxed text-base lg:text-lg">
-              杉恩科技成立于 2009 年，是一家专注于物联网系统研发的高新技术企业。
+              杉恩科技成立于 2019 年，是一家专注于物联网系统研发的高新技术企业。
               公司以"万物互联，智慧感知"为使命，致力于通过先进的传感器技术、
               数据处理算法和智能分析平台，为水库安全、森林保护、国土资源、
               生态环境等关键领域提供全方位的监测解决方案。
             </p>
             <p className="mt-4 text-slate-400 leading-relaxed">
-              经过十余年的技术积累与行业深耕，杉恩科技已发展成为国内物联网监测
+              经过五年的技术积累与行业深耕，杉恩科技已发展成为国内物联网监测
               领域的领先企业，业务覆盖全国 50 余个城市，服务客户涵盖水利、林业、
               自然资源、生态环境等政府部门及企事业单位。
             </p>

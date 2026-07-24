@@ -60,9 +60,10 @@ export default function Footer() {
               联系方式
             </h4>
             <ul className="space-y-2.5">
-              <li className="text-sm text-slate-500">电话：400-888-8888</li>
-              <li className="text-sm text-slate-500">邮箱：info@shane-tech.com</li>
-              <li className="text-sm text-slate-500">地址：高新技术产业园区</li>
+              <li className="text-sm text-slate-500">业务咨询：13265424932</li>
+              <li className="text-sm text-slate-500">技术交流：0755-83209287</li>
+              <li className="text-sm text-slate-500">邮箱：shanenservice@163.com</li>
+              <li className="text-sm text-slate-500">地址：深圳市福田区车公庙天祥大厦4楼</li>
             </ul>
           </div>
         </div>

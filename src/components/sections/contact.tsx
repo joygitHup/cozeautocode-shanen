@@ -37,8 +37,7 @@ export default function ContactSection() {
               <div>
                 <h3 className="text-sm font-medium text-slate-200 mb-1">公司地址</h3>
                 <p className="text-sm text-slate-400">
-                  中国 · 高新技术产业园区<br />
-                  科技创新大厦 A 座 18 层
+                  深圳市福田区车公庙天祥大厦4楼
                 </p>
               </div>
             </div>
@@ -50,8 +49,8 @@ export default function ContactSection() {
               <div>
                 <h3 className="text-sm font-medium text-slate-200 mb-1">联系电话</h3>
                 <p className="text-sm text-slate-400">
-                  业务咨询：400-888-8888<br />
-                  技术支持：400-888-8889
+                  业务咨询：13265424932<br />
+                  技术交流：0755-83209287
                 </p>
               </div>
             </div>
@@ -63,8 +62,7 @@ export default function ContactSection() {
               <div>
                 <h3 className="text-sm font-medium text-slate-200 mb-1">电子邮箱</h3>
                 <p className="text-sm text-slate-400">
-                  商务合作：business@shane-tech.com<br />
-                  人才招聘：hr@shane-tech.com
+                  shanenservice@163.com
                 </p>
               </div>
             </div>
