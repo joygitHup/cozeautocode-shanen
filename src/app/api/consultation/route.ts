@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseClient } from '@/storage/database/supabase-client';
+import { getDb, generateId } from '@/lib/sqlite';
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,20 +19,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const client = getSupabaseClient();
-    const { data, error } = await client
-      .from('consultations')
-      .insert({
-        name,
-        phone,
-        company: company || null,
-        domain: domain || null,
-        message: message || null,
-      })
-      .select()
-      .single();
+    const db = getDb();
+    const id = generateId();
+    const now = new Date().toISOString();
 
-    if (error) throw new Error(`插入失败: ${error.message}`);
+    db.prepare(
+      `INSERT INTO consultations (id, name, phone, company, domain, message, status, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)`
+    ).run(id, name, phone, company || null, domain || null, message || null, now);
+
+    const data = db
+      .prepare('SELECT * FROM consultations WHERE id = ?')
+      .get(id);
 
     return NextResponse.json({ success: true, data });
   } catch (err) {
@@ -52,32 +50,40 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status');
     const keyword = searchParams.get('keyword');
 
-    const client = getSupabaseClient();
-    let query = client
-      .from('consultations')
-      .select('*', { count: 'exact' })
-      .order('created_at', { ascending: false });
+    const db = getDb();
+    const conditions: string[] = [];
+    const params: (string | number)[] = [];
 
     if (status && status !== 'all') {
-      query = query.eq('status', status);
+      conditions.push('status = ?');
+      params.push(status);
     }
 
     if (keyword) {
-      query = query.or(
-        `name.ilike.%${keyword}%,company.ilike.%${keyword}%,phone.ilike.%${keyword}%`
-      );
+      conditions.push('(name LIKE ? OR company LIKE ? OR phone LIKE ?)');
+      const kw = `%${keyword}%`;
+      params.push(kw, kw, kw);
     }
 
-    const offset = (page - 1) * pageSize;
-    query = query.range(offset, offset + pageSize - 1);
+    const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
 
-    const { data, error, count } = await query;
-    if (error) throw new Error(`查询失败: ${error.message}`);
+    const countRow = db
+      .prepare(`SELECT COUNT(*) as total FROM consultations ${where}`)
+      .get(...params) as { total: number };
+    const total = countRow.total;
+
+    const offset = (page - 1) * pageSize;
+    const data = db
+      .prepare(
+        `SELECT * FROM consultations ${where}
+         ORDER BY created_at DESC LIMIT ? OFFSET ?`
+      )
+      .all(...params, pageSize, offset);
 
     return NextResponse.json({
       success: true,
-      data: data || [],
-      total: count || 0,
+      data,
+      total,
       page,
       pageSize,
     });

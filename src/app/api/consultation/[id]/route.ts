@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseClient } from '@/storage/database/supabase-client';
+import { getDb } from '@/lib/sqlite';
 
 export async function PATCH(
   request: NextRequest,
@@ -17,16 +17,19 @@ export async function PATCH(
       );
     }
 
-    const client = getSupabaseClient();
-    const { data, error } = await client
-      .from('consultations')
-      .update({ status })
-      .eq('id', id)
-      .select()
-      .single();
+    const db = getDb();
+    const result = db
+      .prepare('UPDATE consultations SET status = ? WHERE id = ?')
+      .run(status, id);
 
-    if (error) throw new Error(`更新失败: ${error.message}`);
+    if (result.changes === 0) {
+      return NextResponse.json(
+        { success: false, error: '记录不存在' },
+        { status: 404 }
+      );
+    }
 
+    const data = db.prepare('SELECT * FROM consultations WHERE id = ?').get(id);
     return NextResponse.json({ success: true, data });
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : '更新失败';
@@ -38,19 +41,20 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
+    const db = getDb();
+    const result = db.prepare('DELETE FROM consultations WHERE id = ?').run(id);
 
-    const client = getSupabaseClient();
-    const { error } = await client
-      .from('consultations')
-      .delete()
-      .eq('id', id);
-
-    if (error) throw new Error(`删除失败: ${error.message}`);
+    if (result.changes === 0) {
+      return NextResponse.json(
+        { success: false, error: '记录不存在' },
+        { status: 404 }
+      );
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {

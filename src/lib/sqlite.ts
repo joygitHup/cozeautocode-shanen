@@ -1,0 +1,54 @@
+import Database from 'better-sqlite3';
+import path from 'path';
+import fs from 'fs';
+
+let dbInstance: Database.Database | null = null;
+
+export function getDb(): Database.Database {
+  if (dbInstance) return dbInstance;
+
+  // 数据文件路径：优先 /data 目录（容器环境），否则项目 data 目录
+  let dataDir = process.env.DATA_DIR || path.join(process.cwd(), 'data');
+
+  // 确保目录存在
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
+
+  const dbPath = path.join(dataDir, 'consultations.db');
+  dbInstance = new Database(dbPath);
+
+  // 启用 WAL 模式，提升并发性能
+  dbInstance.pragma('journal_mode = WAL');
+  dbInstance.pragma('busy_timeout = 30000');
+  dbInstance.pragma('foreign_keys = ON');
+
+  // 初始化表
+  dbInstance.exec(`
+    CREATE TABLE IF NOT EXISTS consultations (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      phone TEXT NOT NULL,
+      company TEXT,
+      domain TEXT,
+      message TEXT,
+      status TEXT NOT NULL DEFAULT 'pending',
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_consultations_status ON consultations(status);
+    CREATE INDEX IF NOT EXISTS idx_consultations_created_at ON consultations(created_at);
+  `);
+
+  return dbInstance;
+}
+
+// 生成 UUID v4
+export function generateId(): string {
+  if (crypto && crypto.randomUUID) return crypto.randomUUID();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
