@@ -163,3 +163,8 @@ Desktop.ini
 # Misc
 .coze-logs
 .codegraph/
+
+# SQLite database files
+data/*.db
+data/*.db-wal
+data/*.db-shm
