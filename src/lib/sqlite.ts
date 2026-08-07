@@ -38,6 +38,31 @@ export function getDb(): Database.Database {
 
     CREATE INDEX IF NOT EXISTS idx_consultations_status ON consultations(status);
     CREATE INDEX IF NOT EXISTS idx_consultations_created_at ON consultations(created_at);
+
+    -- 访问记录表
+    CREATE TABLE IF NOT EXISTS visits (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      session_id TEXT,
+      ip TEXT,
+      path TEXT,
+      referer TEXT,
+      user_agent TEXT,
+      duration INTEGER DEFAULT 0,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_visits_created_at ON visits(created_at);
+    CREATE INDEX IF NOT EXISTS idx_visits_session_id ON visits(session_id);
+    CREATE INDEX IF NOT EXISTS idx_visits_path ON visits(path);
+
+    -- 页面每日统计表（预聚合，减少查询压力）
+    CREATE TABLE IF NOT EXISTS page_stats (
+      date TEXT NOT NULL,
+      path TEXT NOT NULL,
+      page_views INTEGER NOT NULL DEFAULT 0,
+      unique_visitors INTEGER NOT NULL DEFAULT 0,
+      PRIMARY KEY (date, path)
+    );
   `);
 
   return dbInstance;
