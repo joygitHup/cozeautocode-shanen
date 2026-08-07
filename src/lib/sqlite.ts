@@ -44,6 +44,7 @@ export function getDb(): Database.Database {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       session_id TEXT,
       ip TEXT,
+      region TEXT,
       path TEXT,
       referer TEXT,
       user_agent TEXT,
@@ -54,6 +55,7 @@ export function getDb(): Database.Database {
     CREATE INDEX IF NOT EXISTS idx_visits_created_at ON visits(created_at);
     CREATE INDEX IF NOT EXISTS idx_visits_session_id ON visits(session_id);
     CREATE INDEX IF NOT EXISTS idx_visits_path ON visits(path);
+    CREATE INDEX IF NOT EXISTS idx_visits_region ON visits(region);
 
     -- 页面每日统计表（预聚合，减少查询压力）
     CREATE TABLE IF NOT EXISTS page_stats (
@@ -64,6 +66,18 @@ export function getDb(): Database.Database {
       PRIMARY KEY (date, path)
     );
   `);
+
+  // 兼容处理：检查并添加 region 列（老版本数据库可能没有该列）
+  try {
+    const cols = dbInstance
+      .prepare("PRAGMA table_info(visits)")
+      .all() as Array<{ name: string }>;
+    if (!cols.some((c) => c.name === 'region')) {
+      dbInstance.exec("ALTER TABLE visits ADD COLUMN region TEXT;");
+    }
+  } catch {
+    // 表还不存在，跳过迁移
+  }
 
   return dbInstance;
 }
