@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/sqlite';
 
+export const runtime = 'nodejs';
+
 export async function GET(request: Request) {
   try {
     const db = getDb();

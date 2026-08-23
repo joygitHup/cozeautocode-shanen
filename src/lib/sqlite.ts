@@ -8,7 +8,7 @@ export function getDb(): Database.Database {
   if (dbInstance) return dbInstance;
 
   // 数据文件路径：优先 /data 目录（容器环境），否则项目 data 目录
-  let dataDir = process.env.DATA_DIR || path.join(process.cwd(), 'data');
+  const dataDir = process.env.DATA_DIR || path.join(process.cwd(), 'data');
 
   // 确保目录存在
   if (!fs.existsSync(dataDir)) {
@@ -33,7 +33,7 @@ export function getDb(): Database.Database {
       domain TEXT,
       message TEXT,
       status TEXT NOT NULL DEFAULT 'pending',
-      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+      created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
     );
 
     CREATE INDEX IF NOT EXISTS idx_consultations_status ON consultations(status);
@@ -49,7 +49,7 @@ export function getDb(): Database.Database {
       referer TEXT,
       user_agent TEXT,
       duration INTEGER DEFAULT 0,
-      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+      created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
     );
 
     CREATE INDEX IF NOT EXISTS idx_visits_created_at ON visits(created_at);
@@ -82,9 +82,27 @@ export function getDb(): Database.Database {
   return dbInstance;
 }
 
+function pad2(n: number): string {
+  return String(n).padStart(2, '0');
+}
+
+/** 本地日期时间，格式 YYYY-MM-DD HH:mm:ss */
+export function nowLocalDateTime(date: Date = new Date()): string {
+  return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())} ${pad2(date.getHours())}:${pad2(date.getMinutes())}:${pad2(date.getSeconds())}`;
+}
+
+/** 本地日期，格式 YYYY-MM-DD；offsetDays 为相对今天的偏移 */
+export function nowLocalDate(offsetDays = 0): string {
+  const d = new Date();
+  d.setDate(d.getDate() + offsetDays);
+  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+}
+
 // 生成 UUID v4
 export function generateId(): string {
-  if (crypto && crypto.randomUUID) return crypto.randomUUID();
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0;
     const v = c === 'x' ? r : (r & 0x3) | 0x8;

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb, generateId } from '@/lib/sqlite';
+import { getDb, generateId, nowLocalDateTime } from '@/lib/sqlite';
+
+export const runtime = 'nodejs';
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,7 +23,7 @@ export async function POST(request: NextRequest) {
 
     const db = getDb();
     const id = generateId();
-    const now = new Date().toISOString();
+    const now = nowLocalDateTime();
 
     db.prepare(
       `INSERT INTO consultations (id, name, phone, company, domain, message, status, created_at)

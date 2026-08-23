@@ -62,14 +62,17 @@ export function VisitTracker() {
       const duration = Math.round((Date.now() - startTimeRef.current) / 1000);
       // 使用 sendBeacon 确保页面关闭时也能上报
       if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
-        navigator.sendBeacon(
-          '/api/visit',
-          JSON.stringify({
-            path: fullPath,
-            referer: document.referrer,
-            duration,
-          }),
+        const payload = new Blob(
+          [
+            JSON.stringify({
+              path: fullPath,
+              referer: document.referrer,
+              duration,
+            }),
+          ],
+          { type: 'application/json' },
         );
+        navigator.sendBeacon('/api/visit', payload);
       }
     };
 

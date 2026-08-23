@@ -38,7 +38,7 @@ export default function AboutSection() {
           <div>
             <p className="text-slate-300 leading-relaxed text-base lg:text-lg">
               杉恩科技成立于 2019 年，是一家专注于物联网系统研发的高新技术企业。
-              公司以"万物互联，智慧感知"为使命，致力于通过先进的传感器技术、
+              公司以「万物互联，智慧感知」为使命，致力于通过先进的传感器技术、
               数据处理算法和智能分析平台，为水库安全、森林保护、国土资源、
               生态环境等关键领域提供全方位的监测解决方案。
             </p>

@@ -7,24 +7,30 @@
 
 import Database from 'better-sqlite3';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const dbPath = path.resolve(__dirname, '..', 'data', 'consultations.db');
+const dataDir = process.env.DATA_DIR || path.resolve(__dirname, '..', 'data');
+const dbPath = path.join(dataDir, 'consultations.db');
+
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
 
 const db = new Database(dbPath);
 
-// 确保表存在
+// 与线上一致的表结构（IF NOT EXISTS，避免覆盖已有库）
 db.exec(`
   CREATE TABLE IF NOT EXISTS consultations (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     phone TEXT NOT NULL,
     company TEXT,
     domain TEXT,
     message TEXT,
-    status TEXT DEFAULT 'pending',
-    created_at TEXT DEFAULT (datetime('now', 'localtime'))
+    status TEXT NOT NULL DEFAULT 'pending',
+    created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
   );
 
   CREATE TABLE IF NOT EXISTS visits (
@@ -36,23 +42,22 @@ db.exec(`
     referer TEXT,
     duration INTEGER DEFAULT 0,
     user_agent TEXT,
-    created_at TEXT DEFAULT (datetime('now', 'localtime'))
+    created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
   );
 
   CREATE TABLE IF NOT EXISTS page_stats (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
     date TEXT NOT NULL,
     path TEXT NOT NULL,
-    page_views INTEGER DEFAULT 0,
-    unique_visitors INTEGER DEFAULT 0,
-    UNIQUE(date, path)
+    page_views INTEGER NOT NULL DEFAULT 0,
+    unique_visitors INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (date, path)
   );
 `);
 
 // 模拟数据
 const names = ['张三', '李四', '王五', '赵六', '陈七', '刘八', '周九', '吴十', '郑一', '孙二'];
 const companies = ['深圳市创新科技有限公司', '广州环保技术有限公司', '上海智慧水务有限公司', '北京生态科技有限公司', '成都林业发展有限公司', '杭州智能装备有限公司', '武汉水利工程有限公司', '南京环境监测有限公司', '西安国土资源公司', '重庆生态农业公司'];
-const domains = ['reservoir', 'forest', 'territory', 'environment'];
+const domains = ['reservoir', 'forest', 'land', 'environment'];
 const messages = [
   '想了解水库监测系统的具体方案和报价',
   '请问森林防火监测系统的覆盖范围有多大？',
@@ -133,8 +138,8 @@ console.log('');
 
 // 生成咨询记录
 const insertConsultation = db.prepare(`
-  INSERT INTO consultations (name, phone, company, domain, message, status, created_at)
-  VALUES (@name, @phone, @company, @domain, @message, @status, @created_at)
+  INSERT INTO consultations (id, name, phone, company, domain, message, status, created_at)
+  VALUES (@id, @name, @phone, @company, @domain, @message, @status, @created_at)
 `);
 
 const statuses = ['pending', 'processing', 'completed', 'closed'];
@@ -142,6 +147,7 @@ const statuses = ['pending', 'processing', 'completed', 'closed'];
 const insertManyConsultations = db.transaction((count) => {
   for (let i = 0; i < count; i++) {
     insertConsultation.run({
+      id: genUUID(),
       name: randomItem(names),
       phone: randomPhone(),
       company: randomItem(companies),

@@ -25,7 +25,6 @@ import {
   Activity,
   MapPin,
   Calendar,
-  Download,
 } from 'lucide-react';
 
 interface Consultation {

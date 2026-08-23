@@ -91,22 +91,22 @@ body {
 /* Grid background pattern */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+    linear-gradient(rgb(6 182 212 / 3%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(6 182 212 / 3%) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
 /* Subtle glow effects */
 .glow-cyan {
-  box-shadow: 0 0 20px rgba(6, 182, 212, 0.15), 0 0 60px rgba(6, 182, 212, 0.05);
+  box-shadow: 0 0 20px rgb(6 182 212 / 15%), 0 0 60px rgb(6 182 212 / 5%);
 }
 
 .glow-cyan-strong {
-  box-shadow: 0 0 20px rgba(6, 182, 212, 0.3), 0 0 60px rgba(6, 182, 212, 0.1);
+  box-shadow: 0 0 20px rgb(6 182 212 / 30%), 0 0 60px rgb(6 182 212 / 10%);
 }
 
 .text-glow-cyan {
-  text-shadow: 0 0 20px rgba(6, 182, 212, 0.5), 0 0 40px rgba(6, 182, 212, 0.2);
+  text-shadow: 0 0 20px rgb(6 182 212 / 50%), 0 0 40px rgb(6 182 212 / 20%);
 }
 
 /* Animated gradient border */
@@ -119,7 +119,7 @@ body {
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(6, 182, 212, 0.4), transparent 50%, rgba(16, 185, 129, 0.4));
+  background: linear-gradient(135deg, rgb(6 182 212 / 40%), transparent 50%, rgb(16 185 129 / 40%));
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   pointer-events: none;
@@ -127,8 +127,16 @@ body {
 
 /* Pulse animation for data points */
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.5); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.5);
+  }
 }
 
 .animate-pulse-dot {
@@ -147,8 +155,15 @@ body {
 
 /* Fade in up animation */
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fade-in-up {
@@ -158,8 +173,15 @@ body {
 
 /* Counter animation */
 @keyframes count-up {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-count-up {
@@ -189,10 +211,22 @@ body {
 
 /* Floating particles */
 @keyframes float {
-  0%, 100% { transform: translateY(0px) translateX(0px); }
-  25% { transform: translateY(-10px) translateX(5px); }
-  50% { transform: translateY(-5px) translateX(-5px); }
-  75% { transform: translateY(-15px) translateX(3px); }
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+
+  25% {
+    transform: translateY(-10px) translateX(5px);
+  }
+
+  50% {
+    transform: translateY(-5px) translateX(-5px);
+  }
+
+  75% {
+    transform: translateY(-15px) translateX(3px);
+  }
 }
 
 .animate-float {

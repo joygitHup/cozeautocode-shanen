@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb } from '@/lib/sqlite';
+import { getDb, nowLocalDate } from '@/lib/sqlite';
+
+export const runtime = 'nodejs';
 
 export async function GET(request: NextRequest) {
   try {
@@ -13,10 +15,10 @@ export async function GET(request: NextRequest) {
     const overview = db
       .prepare(
         `SELECT
-          (SELECT COUNT(*) FROM visits WHERE date(created_at) >= date('now', ?)) as total_visits,
-          (SELECT COUNT(DISTINCT session_id) FROM visits WHERE date(created_at) >= date('now', ?)) as total_visitors,
-          (SELECT COUNT(DISTINCT path) FROM visits WHERE date(created_at) >= date('now', ?)) as total_pages,
-          (SELECT COUNT(*) FROM consultations WHERE date(created_at) >= date('now', ?)) as total_consultations`,
+          (SELECT COUNT(*) FROM visits WHERE date(created_at) >= date('now', 'localtime', ?)) as total_visits,
+          (SELECT COUNT(DISTINCT session_id) FROM visits WHERE date(created_at) >= date('now', 'localtime', ?)) as total_visitors,
+          (SELECT COUNT(DISTINCT path) FROM visits WHERE date(created_at) >= date('now', 'localtime', ?)) as total_pages,
+          (SELECT COUNT(*) FROM consultations WHERE date(created_at) >= date('now', 'localtime', ?)) as total_consultations`,
       )
       .get(
         `-${days - 1} days`,
@@ -38,7 +40,7 @@ export async function GET(request: NextRequest) {
           COUNT(*) as page_views,
           COUNT(DISTINCT session_id) as unique_visitors
          FROM visits
-         WHERE date(created_at) >= date('now', ?)
+         WHERE date(created_at) >= date('now', 'localtime', ?)
          GROUP BY date(created_at)
          ORDER BY date ASC`,
       )
@@ -52,9 +54,7 @@ export async function GET(request: NextRequest) {
     const trendMap = new Map(dailyTrend.map((d) => [d.date, d]));
     const filledTrend: typeof dailyTrend = [];
     for (let i = days - 1; i >= 0; i--) {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      const dateStr = d.toISOString().slice(0, 10);
+      const dateStr = nowLocalDate(-i);
       filledTrend.push(
         trendMap.get(dateStr) || {
           date: dateStr,
@@ -69,12 +69,12 @@ export async function GET(request: NextRequest) {
       .prepare(
         `SELECT
           path,
-          page_views,
-          unique_visitors
+          SUM(page_views) as page_views,
+          SUM(unique_visitors) as unique_visitors
          FROM page_stats
-         WHERE date >= date('now', ?)
+         WHERE date >= date('now', 'localtime', ?)
          GROUP BY path
-         ORDER BY page_views DESC
+         ORDER BY SUM(page_views) DESC
          LIMIT 10`,
       )
       .all(`-${days - 1} days`) as Array<{
@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
           END as referer,
           COUNT(*) as visits
          FROM visits
-         WHERE date(created_at) >= date('now', ?)
+         WHERE date(created_at) >= date('now', 'localtime', ?)
          GROUP BY referer
          ORDER BY visits DESC
          LIMIT 10`,
@@ -101,8 +101,8 @@ export async function GET(request: NextRequest) {
       .all(`-${days - 1} days`) as Array<{ referer: string; visits: number }>;
 
     // 今日与昨日对比
-    const today = new Date().toISOString().slice(0, 10);
-    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    const today = nowLocalDate();
+    const yesterday = nowLocalDate(-1);
 
     const todayData = db
       .prepare(

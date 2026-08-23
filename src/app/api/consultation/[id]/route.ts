@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/lib/sqlite';
 
+export const runtime = 'nodejs';
+
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

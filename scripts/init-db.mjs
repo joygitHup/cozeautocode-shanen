@@ -60,7 +60,7 @@ db.exec(`
     domain TEXT,
     message TEXT,
     status TEXT NOT NULL DEFAULT 'pending',
-    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
   );
 
   CREATE INDEX IF NOT EXISTS idx_consultations_status ON consultations(status);
@@ -85,7 +85,7 @@ db.exec(`
     referer TEXT,
     user_agent TEXT,
     duration INTEGER DEFAULT 0,
-    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
   );
 
   CREATE INDEX IF NOT EXISTS idx_visits_created_at ON visits(created_at);
