@@ -1,21 +1,16 @@
-import Navbar from '@/components/navbar';
-import HeroSection from '@/components/sections/hero';
-import DomainsSection from '@/components/sections/domains';
-import StatsSection from '@/components/sections/stats';
-import AboutSection from '@/components/sections/about';
-import ContactSection from '@/components/sections/contact';
-import Footer from '@/components/footer';
+import type { Metadata } from 'next';
+import HomePage from '@/components/home-page';
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/lib/seo';
 
+export const metadata: Metadata = {
+  title: { absolute: SITE_TITLE },
+  description: SITE_DESCRIPTION,
+  alternates: {
+    canonical: SITE_URL,
+  },
+};
+
+/** 服务端页面：保证元数据与首屏 HTML 可被搜索引擎抓取 */
 export default function Home() {
-  return (
-    <main className="relative min-h-screen bg-[#0a0e17]">
-      <Navbar />
-      <HeroSection />
-      <DomainsSection />
-      <StatsSection />
-      <AboutSection />
-      <ContactSection />
-      <Footer />
-    </main>
-  );
+  return <HomePage />;
 }

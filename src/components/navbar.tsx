@@ -2,18 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-
-const navItems = [
-  { label: '首页', href: '#hero' },
-  { label: '业务领域', href: '#domains' },
-  { label: '技术实力', href: '#stats' },
-  { label: '关于我们', href: '#about' },
-  { label: '联系我们', href: '#contact' },
-];
+import { useLanguage } from '@/lib/i18n/context';
 
 export default function Navbar() {
+  const { t, toggleLocale } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const navItems = [
+    { label: t.nav.home, href: '#hero' },
+    { label: t.nav.domains, href: '#domains' },
+    { label: t.nav.stats, href: '#stats' },
+    { label: t.nav.about, href: '#about' },
+    { label: t.nav.contact, href: '#contact' },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +27,7 @@ export default function Navbar() {
 
   return (
     <nav
+      aria-label={t.nav.home}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? 'bg-[#0a0e17]/90 backdrop-blur-xl border-b border-[#1e293b]'
@@ -41,7 +44,7 @@ export default function Navbar() {
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-cyan-400 rounded-full" />
             </div>
             <span className="text-lg font-bold tracking-wider text-slate-100">
-              杉恩科技
+              {t.brand}
             </span>
           </a>
 
@@ -56,15 +59,34 @@ export default function Navbar() {
                 {item.label}
               </a>
             ))}
+            <button
+              type="button"
+              onClick={toggleLocale}
+              aria-label={t.langSwitchAria}
+              className="ml-2 px-2.5 py-1 text-xs font-mono tracking-wider text-cyan-400/80 border border-cyan-500/30 rounded-sm hover:bg-cyan-500/10 hover:border-cyan-500/50 hover:text-cyan-400 transition-all duration-200"
+            >
+              {t.langSwitch}
+            </button>
           </div>
 
-          {/* Mobile Toggle */}
-          <button
-            className="lg:hidden text-slate-400 hover:text-cyan-400 transition-colors"
-            onClick={() => setMobileOpen(!mobileOpen)}
-          >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile: lang + menu */}
+          <div className="lg:hidden flex items-center gap-3">
+            <button
+              type="button"
+              onClick={toggleLocale}
+              aria-label={t.langSwitchAria}
+              className="px-2 py-1 text-xs font-mono tracking-wider text-cyan-400/80 border border-cyan-500/30 rounded-sm hover:bg-cyan-500/10 transition-all duration-200"
+            >
+              {t.langSwitch}
+            </button>
+            <button
+              type="button"
+              className="text-slate-400 hover:text-cyan-400 transition-colors"
+              onClick={() => setMobileOpen(!mobileOpen)}
+            >
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
 

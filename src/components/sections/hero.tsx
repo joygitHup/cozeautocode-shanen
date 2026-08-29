@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useLanguage } from '@/lib/i18n/context';
 
 export default function HeroSection() {
+  const { t } = useLanguage();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -125,30 +127,23 @@ export default function HeroSection() {
         <div className="mb-8 inline-flex items-center gap-2 px-4 py-2 border border-[#1e293b] rounded-sm bg-[#111827]/50 backdrop-blur-sm">
           <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse-dot" />
           <span className="text-xs font-mono text-cyan-400/80 tracking-widest uppercase">
-            IoT System Online
+            {t.hero.status}
           </span>
           <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse-dot" style={{ animationDelay: '0.5s' }} />
         </div>
 
         <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-wide text-slate-100 leading-tight">
-          <span className="block">万物互联</span>
-          <span className="block mt-2 text-glow-cyan text-cyan-400">智慧感知</span>
+          <span className="block">{t.hero.title1}</span>
+          <span className="block mt-2 text-glow-cyan text-cyan-400">{t.hero.title2}</span>
         </h1>
 
         <p className="mt-8 text-lg lg:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
-          杉恩科技专注于物联网系统研发，以精密传感与智能算法，
-          <br className="hidden sm:block" />
-          守护每一片水库、森林、国土与环境
+          {t.hero.description}
         </p>
 
         {/* Data indicators */}
         <div className="mt-12 flex flex-wrap justify-center gap-8 lg:gap-16">
-          {[
-            { value: '4', unit: '大', label: '核心领域' },
-            { value: '1000', unit: '+', label: '监测站点' },
-            { value: '99.9', unit: '%', label: '系统可用率' },
-            { value: '7x24', unit: '', label: '不间断运行' },
-          ].map((item, i) => (
+          {t.hero.indicators.map((item, i) => (
             <div
               key={i}
               className="text-center animate-fade-in-up"
@@ -158,7 +153,9 @@ export default function HeroSection() {
                 <span className="text-3xl lg:text-4xl font-mono font-bold text-cyan-400">
                   {item.value}
                 </span>
-                <span className="text-sm text-cyan-400/60 ml-0.5">{item.unit}</span>
+                {item.unit ? (
+                  <span className="text-sm text-cyan-400/60 ml-0.5">{item.unit}</span>
+                ) : null}
               </div>
               <div className="text-xs text-slate-500 mt-1 tracking-wider">{item.label}</div>
             </div>
@@ -171,13 +168,13 @@ export default function HeroSection() {
             href="#domains"
             className="inline-flex items-center justify-center px-8 py-3 bg-cyan-500/10 border border-cyan-500/40 text-cyan-400 text-sm font-medium tracking-wide rounded-sm hover:bg-cyan-500/20 hover:border-cyan-500/60 transition-all duration-200"
           >
-            探索业务领域
+            {t.hero.ctaDomains}
           </a>
           <a
             href="#contact"
             className="inline-flex items-center justify-center px-8 py-3 bg-[#111827] border border-[#1e293b] text-slate-300 text-sm font-medium tracking-wide rounded-sm hover:bg-[#1a2332] hover:border-[#334155] transition-all duration-200"
           >
-            联系我们
+            {t.hero.ctaContact}
           </a>
         </div>
       </div>

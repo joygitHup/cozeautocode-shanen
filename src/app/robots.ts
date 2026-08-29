@@ -1,11 +1,26 @@
-import { MetadataRoute } from 'next';
+import type { MetadataRoute } from 'next';
+import { SITE_URL } from '@/lib/seo';
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/api/', '/_next/', '/static/'],
-    },
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/api/', '/admin', '/admin/', '/_next/'],
+      },
+      {
+        userAgent: 'Baiduspider',
+        allow: '/',
+        disallow: ['/api/', '/admin', '/admin/'],
+      },
+      {
+        userAgent: 'Googlebot',
+        allow: '/',
+        disallow: ['/api/', '/admin', '/admin/'],
+      },
+    ],
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   };
 }
