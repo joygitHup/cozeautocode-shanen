@@ -35,7 +35,7 @@ export default function Footer() {
                 {t.brand}
               </span>
             </div>
-            <p className="text-sm text-slate-500 leading-relaxed">
+            <p className="text-sm text-slate-400 leading-relaxed">
               {t.footer.tagline1}
               <br />
               {t.footer.tagline2}
@@ -52,7 +52,7 @@ export default function Footer() {
                 <li key={item.label}>
                   <a
                     href={item.href}
-                    className="text-sm text-slate-500 hover:text-cyan-400/70 transition-colors"
+                    className="text-sm text-slate-400 hover:text-cyan-400/70 transition-colors"
                   >
                     {item.label}
                   </a>
@@ -71,7 +71,7 @@ export default function Footer() {
                 <li key={item.label}>
                   <a
                     href={item.href}
-                    className="text-sm text-slate-500 hover:text-cyan-400/70 transition-colors"
+                    className="text-sm text-slate-400 hover:text-cyan-400/70 transition-colors"
                   >
                     {item.label}
                   </a>
@@ -86,17 +86,17 @@ export default function Footer() {
               {t.footer.contact}
             </h4>
             <ul className="space-y-2.5">
-              <li className="text-sm text-slate-500">
+              <li className="text-sm text-slate-400">
                 <a href="tel:13265424932" className="hover:text-cyan-400/70 transition-colors">
                   {t.footer.phoneBiz}
                 </a>
               </li>
-              <li className="text-sm text-slate-500">
+              <li className="text-sm text-slate-400">
                 <a href="tel:075583209287" className="hover:text-cyan-400/70 transition-colors">
                   {t.footer.phoneTech}
                 </a>
               </li>
-              <li className="text-sm text-slate-500">
+              <li className="text-sm text-slate-400">
                 <a
                   href="mailto:shanenservice@163.com"
                   className="hover:text-cyan-400/70 transition-colors"
@@ -104,18 +104,18 @@ export default function Footer() {
                   {t.footer.email}
                 </a>
               </li>
-              <li className="text-sm text-slate-500">{t.footer.address}</li>
+              <li className="text-sm text-slate-400">{t.footer.address}</li>
             </ul>
           </div>
         </div>
 
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-[#1e293b] flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-slate-600">{t.footer.copyright}</p>
+          <p className="text-xs text-slate-500">{t.footer.copyright}</p>
           <div className="flex items-center gap-4">
             <a
               href="/sitemap.xml"
-              className="text-xs text-slate-600 hover:text-slate-400 transition-colors"
+              className="text-xs text-slate-500 hover:text-slate-400 transition-colors"
             >
               {t.footer.sitemap}
             </a>

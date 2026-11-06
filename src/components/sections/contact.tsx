@@ -59,18 +59,18 @@ export default function ContactSection() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 mb-4">
             <div className="w-8 h-px bg-cyan-500/40" />
-            <span className="text-xs font-mono text-cyan-400/60 tracking-widest uppercase">
+            <span className="text-[13px] font-mono text-cyan-400/80 tracking-widest uppercase">
               {t.contact.eyebrow}
             </span>
             <div className="w-8 h-px bg-cyan-500/40" />
           </div>
           <h2
             id="contact-heading"
-            className="text-3xl lg:text-4xl font-bold text-slate-100 tracking-wide"
+            className="text-4xl lg:text-5xl font-bold text-slate-100 tracking-wide text-balance"
           >
             {t.contact.title}
           </h2>
-          <p className="mt-4 text-slate-400 max-w-xl mx-auto">
+          <p className="mt-4 text-base lg:text-lg text-slate-400 max-w-xl mx-auto leading-relaxed text-pretty">
             {t.contact.subtitle}
           </p>
         </div>
@@ -118,27 +118,6 @@ export default function ContactSection() {
               </div>
             </div>
 
-            {/* Decorative data block */}
-            <div className="mt-8 p-4 border border-[#1e293b] rounded-sm bg-[#111827]/30">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse-dot" />
-                <span className="text-xs font-mono text-slate-500 tracking-wider">
-                  SYSTEM STATUS
-                </span>
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                {[
-                  { label: 'API Response', value: '12ms' },
-                  { label: 'Uptime', value: '99.97%' },
-                  { label: 'Active Nodes', value: '8,432' },
-                ].map((item) => (
-                  <div key={item.label}>
-                    <div className="text-xs text-slate-500 mb-1">{item.label}</div>
-                    <div className="text-sm font-mono text-cyan-400/80">{item.value}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
 
           {/* Contact Form */}
@@ -172,52 +151,79 @@ export default function ContactSection() {
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs text-slate-500 mb-2 tracking-wider">
+                  <label
+                    htmlFor="contact-name"
+                    className="block text-sm text-slate-400 mb-2 tracking-wider"
+                  >
                     {t.contact.name} <span className="text-cyan-400">*</span>
                   </label>
                   <input
+                    id="contact-name"
+                    name="name"
                     type="text"
                     required
+                    maxLength={50}
+                    autoComplete="name"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-sm text-slate-200 placeholder:text-slate-600 focus:border-cyan-500/40 focus:outline-none transition-colors"
+                    className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-base text-slate-200 placeholder:text-slate-500 focus:border-cyan-500/40 focus:outline-none transition-colors"
                     placeholder={t.contact.namePlaceholder}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-500 mb-2 tracking-wider">
+                  <label
+                    htmlFor="contact-phone"
+                    className="block text-sm text-slate-400 mb-2 tracking-wider"
+                  >
                     {t.contact.phone} <span className="text-cyan-400">*</span>
                   </label>
                   <input
+                    id="contact-phone"
+                    name="phone"
                     type="tel"
                     required
+                    maxLength={20}
+                    inputMode="tel"
+                    autoComplete="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-sm text-slate-200 placeholder:text-slate-600 focus:border-cyan-500/40 focus:outline-none transition-colors"
+                    className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-base text-slate-200 placeholder:text-slate-500 focus:border-cyan-500/40 focus:outline-none transition-colors"
                     placeholder={t.contact.phonePlaceholder}
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-xs text-slate-500 mb-2 tracking-wider">
+                <label
+                  htmlFor="contact-company"
+                  className="block text-sm text-slate-400 mb-2 tracking-wider"
+                >
                   {t.contact.company}
                 </label>
                 <input
+                  id="contact-company"
+                  name="company"
                   type="text"
+                  maxLength={100}
+                  autoComplete="organization"
                   value={formData.company}
                   onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-sm text-slate-200 placeholder:text-slate-600 focus:border-cyan-500/40 focus:outline-none transition-colors"
+                  className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-base text-slate-200 placeholder:text-slate-500 focus:border-cyan-500/40 focus:outline-none transition-colors"
                   placeholder={t.contact.companyPlaceholder}
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-500 mb-2 tracking-wider">
+                <label
+                  htmlFor="contact-domain"
+                  className="block text-sm text-slate-400 mb-2 tracking-wider"
+                >
                   {t.contact.domain}
                 </label>
                 <select
+                  id="contact-domain"
+                  name="domain"
                   value={formData.domain}
                   onChange={(e) => setFormData({ ...formData, domain: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-sm text-slate-400 focus:border-cyan-500/40 focus:outline-none transition-colors"
+                  className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-base text-slate-400 focus:border-cyan-500/40 focus:outline-none transition-colors"
                 >
                   <option value="">{t.contact.domainPlaceholder}</option>
                   {t.contact.domainOptions.map((opt) => (
@@ -228,14 +234,20 @@ export default function ContactSection() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-slate-500 mb-2 tracking-wider">
+                <label
+                  htmlFor="contact-message"
+                  className="block text-sm text-slate-400 mb-2 tracking-wider"
+                >
                   {t.contact.message}
                 </label>
                 <textarea
+                  id="contact-message"
+                  name="message"
                   rows={4}
+                  maxLength={500}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-sm text-slate-200 placeholder:text-slate-600 focus:border-cyan-500/40 focus:outline-none transition-colors resize-none"
+                  className="w-full px-4 py-2.5 bg-[#0a0e17] border border-[#1e293b] rounded-sm text-base text-slate-200 placeholder:text-slate-500 focus:border-cyan-500/40 focus:outline-none transition-colors resize-none"
                   placeholder={t.contact.messagePlaceholder}
                 />
               </div>

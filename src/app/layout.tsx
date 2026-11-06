@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import localFont from 'next/font/local';
 import { Suspense } from 'react';
 import { VisitTracker } from '@/components/tracking/visit-tracker';
 import { JsonLd } from '@/components/seo/json-ld';
@@ -11,6 +12,18 @@ import {
   SITE_URL,
 } from '@/lib/seo';
 import './globals.css';
+
+// 自托管等宽字体，保证数字/英文标识在各平台渲染一致
+const jetbrainsMono = localFont({
+  src: [
+    { path: '../fonts/JetBrainsMono-Regular.woff2', weight: '400', style: 'normal' },
+    { path: '../fonts/JetBrainsMono-Medium.woff2', weight: '500', style: 'normal' },
+    { path: '../fonts/JetBrainsMono-Bold.woff2', weight: '700', style: 'normal' },
+  ],
+  variable: '--font-jetbrains-mono',
+  display: 'swap',
+  preload: true,
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -82,7 +95,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN" className="dark">
+    <html lang="zh-CN" className={`dark ${jetbrainsMono.variable}`}>
       <body className="antialiased">
         <JsonLd />
         {children}

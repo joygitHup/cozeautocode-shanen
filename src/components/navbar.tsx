@@ -27,7 +27,7 @@ export default function Navbar() {
 
   return (
     <nav
-      aria-label={t.nav.home}
+      aria-label={t.navAria}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? 'bg-[#0a0e17]/90 backdrop-blur-xl border-b border-[#1e293b]'
@@ -83,6 +83,9 @@ export default function Navbar() {
               type="button"
               className="text-slate-400 hover:text-cyan-400 transition-colors"
               onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label={t.menuAria}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
             >
               {mobileOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -92,7 +95,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="lg:hidden bg-[#0a0e17]/95 backdrop-blur-xl border-b border-[#1e293b]">
+        <div id="mobile-menu" className="lg:hidden bg-[#0a0e17]/95 backdrop-blur-xl border-b border-[#1e293b]">
           <div className="px-6 py-4 space-y-3">
             {navItems.map((item) => (
               <a

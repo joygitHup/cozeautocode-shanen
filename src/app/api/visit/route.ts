@@ -4,7 +4,7 @@ import crypto from 'crypto';
 
 export const runtime = 'nodejs';
 
-const IGNORE_PATHS = ['/api/', '/admin', '/_next/', '/favicon.ico', '/static/'];
+const IGNORE_PATHS = ['/api/', '/shanenadmin', '/_next/', '/favicon.ico', '/static/'];
 const PRIVATE_IP =
   /^(?:127\.|10\.|192\.168\.|172\.(?:1[6-9]|2\d|3[01])\.|::1$|localhost$|unknown$)/i;
 const regionCache = new Map<string, string>();
@@ -128,9 +128,22 @@ export async function POST(request: NextRequest) {
     const response = NextResponse.json({ success: true, data: null });
     const sessionId = getOrCreateSessionId(request, response);
 
+    // duration > 0 表示停留时长回传：只更新已有访问记录，不再新增 PV
+    if (duration > 0) {
+      db.prepare(
+        `UPDATE visits SET duration = ?
+         WHERE id = (
+           SELECT id FROM visits
+           WHERE session_id = ? AND path = ?
+           ORDER BY id DESC LIMIT 1
+         )`,
+      ).run(duration, sessionId, path);
+      return response;
+    }
+
     const insertResult = db.prepare(
       `INSERT INTO visits (session_id, ip, region, path, referer, user_agent, duration, created_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, 0, ?)`,
     ).run(
       sessionId,
       ip,
@@ -138,7 +151,6 @@ export async function POST(request: NextRequest) {
       path,
       referer || '',
       userAgent,
-      duration,
       nowLocalDateTime(),
     );
 

@@ -71,7 +71,7 @@ const messages = [
   '数据安全如何保障？',
 ];
 
-const pages = ['/', '/#domains', '/#about', '/#contact', '/#tech', '/admin'];
+const pages = ['/', '/#domains', '/#about', '/#contact', '/#tech', '/shanenadmin'];
 const referers = [
   '',
   'https://www.baidu.com',

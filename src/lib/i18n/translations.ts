@@ -12,6 +12,8 @@ export const translations = {
     },
     langSwitch: 'EN',
     langSwitchAria: '切换到英文',
+    navAria: '主导航',
+    menuAria: '打开或关闭导航菜单',
     hero: {
       status: 'IoT System Online',
       title1: '万物互联',
@@ -179,6 +181,8 @@ export const translations = {
     },
     langSwitch: '中文',
     langSwitchAria: 'Switch to Chinese',
+    navAria: 'Primary navigation',
+    menuAria: 'Open or close navigation menu',
     hero: {
       status: 'IoT System Online',
       title1: 'Connecting Everything',

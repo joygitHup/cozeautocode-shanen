@@ -51,18 +51,18 @@ export default function DomainsSection() {
         <div className="text-center mb-16 lg:mb-20">
           <div className="inline-flex items-center gap-2 mb-4">
             <div className="w-8 h-px bg-cyan-500/40" />
-            <span className="text-xs font-mono text-cyan-400/60 tracking-widest uppercase">
+            <span className="text-[13px] font-mono text-cyan-400/80 tracking-widest uppercase">
               {t.domains.eyebrow}
             </span>
             <div className="w-8 h-px bg-cyan-500/40" />
           </div>
           <h2
             id="domains-heading"
-            className="text-3xl lg:text-4xl font-bold text-slate-100 tracking-wide"
+            className="text-4xl lg:text-5xl font-bold text-slate-100 tracking-wide text-balance"
           >
             {t.domains.title}
           </h2>
-          <p className="mt-4 text-slate-400 max-w-xl mx-auto">
+          <p className="mt-4 text-base lg:text-lg text-slate-400 max-w-xl mx-auto leading-relaxed text-pretty">
             {t.domains.subtitle}
           </p>
         </div>
@@ -93,14 +93,14 @@ export default function DomainsSection() {
                     <h3 className="text-xl font-bold text-slate-100 tracking-wide">
                       {domain.title}
                     </h3>
-                    <span className="text-xs font-mono text-slate-500 tracking-wider">
+                    <span className="text-[13px] font-mono text-slate-400 tracking-wider">
                       {domain.subtitle}
                     </span>
                   </div>
                 </div>
 
                 {/* Description */}
-                <p className="text-sm text-slate-400 leading-relaxed mb-6">
+                <p className="text-sm text-slate-400 leading-7 mb-6">
                   {domain.description}
                 </p>
 
@@ -109,7 +109,7 @@ export default function DomainsSection() {
                   {domain.features.map((feature) => (
                     <div key={feature} className="flex items-center gap-2">
                       <div className={`w-1 h-1 rounded-full ${colors.bg.replace('/10', '/60')}`} />
-                      <span className="text-xs text-slate-500">{feature}</span>
+                      <span className="text-[13px] text-slate-400">{feature}</span>
                     </div>
                   ))}
                 </div>

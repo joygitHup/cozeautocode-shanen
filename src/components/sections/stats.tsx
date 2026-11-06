@@ -11,6 +11,10 @@ function useCountUp(target: number, duration: number = 2000, start: boolean = fa
 
   useEffect(() => {
     if (!start) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setCount(target);
+      return;
+    }
     let startTime: number;
     let animationId: number;
 
@@ -99,18 +103,18 @@ export default function StatsSection() {
         <div className="text-center mb-16 lg:mb-20">
           <div className="inline-flex items-center gap-2 mb-4">
             <div className="w-8 h-px bg-cyan-500/40" />
-            <span className="text-xs font-mono text-cyan-400/60 tracking-widest uppercase">
+            <span className="text-[13px] font-mono text-cyan-400/80 tracking-widest uppercase">
               {t.stats.eyebrow}
             </span>
             <div className="w-8 h-px bg-cyan-500/40" />
           </div>
           <h2
             id="stats-heading"
-            className="text-3xl lg:text-4xl font-bold text-slate-100 tracking-wide"
+            className="text-4xl lg:text-5xl font-bold text-slate-100 tracking-wide text-balance"
           >
             {t.stats.title}
           </h2>
-          <p className="mt-4 text-slate-400 max-w-xl mx-auto">
+          <p className="mt-4 text-base lg:text-lg text-slate-400 max-w-xl mx-auto leading-relaxed text-pretty">
             {t.stats.subtitle}
           </p>
         </div>

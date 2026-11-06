@@ -19,18 +19,18 @@ export default function AboutSection() {
         <div className="text-center mb-16 lg:mb-20">
           <div className="inline-flex items-center gap-2 mb-4">
             <div className="w-8 h-px bg-cyan-500/40" />
-            <span className="text-xs font-mono text-cyan-400/60 tracking-widest uppercase">
+            <span className="text-[13px] font-mono text-cyan-400/80 tracking-widest uppercase">
               {t.about.eyebrow}
             </span>
             <div className="w-8 h-px bg-cyan-500/40" />
           </div>
           <h2
             id="about-heading"
-            className="text-3xl lg:text-4xl font-bold text-slate-100 tracking-wide"
+            className="text-4xl lg:text-5xl font-bold text-slate-100 tracking-wide text-balance"
           >
             {t.about.title}
           </h2>
-          <p className="mt-4 text-slate-400 max-w-xl mx-auto">
+          <p className="mt-4 text-base lg:text-lg text-slate-400 max-w-xl mx-auto leading-relaxed text-pretty">
             {t.about.subtitle}
           </p>
         </div>
@@ -56,7 +56,7 @@ export default function AboutSection() {
                     className="p-4 border border-[#1e293b] rounded-sm bg-[#111827]/30"
                   >
                     <Icon className="w-5 h-5 text-cyan-400/70 mb-2" strokeWidth={1.5} />
-                    <div className="text-xs text-slate-500 mb-1">{item.label}</div>
+                    <div className="text-[13px] text-slate-400 mb-1">{item.label}</div>
                     <div className="text-sm text-slate-200 font-medium">{item.text}</div>
                   </div>
                 );

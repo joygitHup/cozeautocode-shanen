@@ -12,7 +12,7 @@ export function VisitTracker() {
   // 上报访问记录
   const reportVisit = async (path: string, duration: number = 0) => {
     // 忽略管理后台和 API
-    if (path.startsWith('/admin') || path.startsWith('/api')) return;
+    if (path.startsWith('/shanenadmin') || path.startsWith('/api')) return;
     if (path.startsWith('/_next')) return;
 
     try {

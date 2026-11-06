@@ -14,6 +14,9 @@ export default function HeroSection() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // 用户偏好减少动效时，不启动粒子动画
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     let animationId: number;
     const particles: Array<{
       x: number;
@@ -132,12 +135,12 @@ export default function HeroSection() {
           <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse-dot" style={{ animationDelay: '0.5s' }} />
         </div>
 
-        <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-wide text-slate-100 leading-tight">
+        <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-wide text-slate-100 leading-tight text-balance">
           <span className="block">{t.hero.title1}</span>
           <span className="block mt-2 text-glow-cyan text-cyan-400">{t.hero.title2}</span>
         </h1>
 
-        <p className="mt-8 text-lg lg:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
+        <p className="mt-8 text-lg lg:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed text-pretty">
           {t.hero.description}
         </p>
 
@@ -157,7 +160,7 @@ export default function HeroSection() {
                   <span className="text-sm text-cyan-400/60 ml-0.5">{item.unit}</span>
                 ) : null}
               </div>
-              <div className="text-xs text-slate-500 mt-1 tracking-wider">{item.label}</div>
+              <div className="text-sm text-slate-400 mt-1 tracking-wider">{item.label}</div>
             </div>
           ))}
         </div>

@@ -7,17 +7,17 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/admin', '/admin/', '/_next/'],
+        disallow: ['/api/', '/shanenadmin', '/shanenadmin/', '/_next/'],
       },
       {
         userAgent: 'Baiduspider',
         allow: '/',
-        disallow: ['/api/', '/admin', '/admin/'],
+        disallow: ['/api/', '/shanenadmin', '/shanenadmin/'],
       },
       {
         userAgent: 'Googlebot',
         allow: '/',
-        disallow: ['/api/', '/admin', '/admin/'],
+        disallow: ['/api/', '/shanenadmin', '/shanenadmin/'],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
